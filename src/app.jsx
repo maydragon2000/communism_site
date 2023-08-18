@@ -139,7 +139,7 @@ function App() {
 				{!appSidebarNone && (<Sidebar />)}
 				{!appContentNone && (<Content className={appContentClass} />)}
 				{appFooter && (<Footer />)}
-				<ThemePanel />
+				{/* <ThemePanel /> */}
 			</div>
 		</AppSettings.Provider>
 	)

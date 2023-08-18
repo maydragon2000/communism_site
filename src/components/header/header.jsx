@@ -109,18 +109,18 @@ function Header() {
           <span className="brand-img">
             <span className="brand-img-text text-theme">C</span>
           </span>
-          <span className="brand-text">COMMUNICATION</span>
+          <span className="brand-text">COMMUNISM</span>
         </Link>
       </div>
 
       <div className="menu">
-        <div className="menu-item dropdown">
+        {/* <div className="menu-item dropdown">
           <a href="#/" onClick={toggleAppHeaderSearch} className="menu-link">
             <div className="menu-icon">
               <i className="bi bi-search nav-icon"></i>
             </div>
           </a>
-        </div>
+        </div> */}
         <div className="menu-item dropdown dropdown-mobile-full">
           <a
             href="#/"
@@ -135,26 +135,26 @@ function Header() {
           <div className="dropdown-menu fade dropdown-menu-end w-300px text-center p-0 mt-1">
             <div className="row row-grid gx-0">
               <div className="col-4">
-                <Link
-                  to="/email/inbox"
+                <a
+                  href="https://twitter.com/purecommunism"
                   className="dropdown-item text-decoration-none p-3 bg-none"
                 >
                   <div className="position-relative">
                     <i className="bi bi-twitter h2 opacity-5 d-block my-1"></i>
                   </div>
                   <div className="fw-500 fs-10px text-inverse">TWITTER</div>
-                </Link>
+                </a>
               </div>
               <div className="col-4">
-                <Link
-                  to="/pos/customer-order"
+                <a
+                  href="https://t.me/portaltocommunism"
                   className="dropdown-item text-decoration-none p-3 bg-none"
                 >
                   <div>
                     <i className="bi bi-telegram h2 opacity-5 d-block my-1"></i>
                   </div>
                   <div className="fw-500 fs-10px text-inverse">TELEGRAM</div>
-                </Link>
+                </a>
               </div>
               <div className="col-4">
                 <Link
