@@ -120,9 +120,9 @@ function Home() {
     <div className="home">
       <ul className="breadcrumb">
         <li className="breadcrumb-item">
-          <a href="#/">LAYOUT</a>
+          <a href="#/">HOME</a>
         </li>
-        <li className="breadcrumb-item active">STARTER PAGE</li>
+        <li className="breadcrumb-item active">DASHBOARD</li>
       </ul>
 
       <h1 className="page-header header">Communism</h1>
@@ -222,12 +222,12 @@ function Home() {
             </CardBody>
           </Card>
         </div>
-        <div className="map_spread mt-4">
+        <div id="jsVectorMap" className="map_spread mt-4">
           <h2>Map-Spread Communism</h2>
           <Card>
             <CardBody>
               <div className="d-flex fw-bold small mb-3 justify-content-end">
-                <CardExpandToggler />
+                <div id="jvectorMap" style={{ height: "300px" }}></div>
               </div>
             </CardBody>
           </Card>
@@ -268,16 +268,6 @@ function Home() {
                   <CardExpandToggler />
                 </div>
                 <p></p>
-              </CardBody>
-            </Card>
-          </div>
-        </div>
-        <div>
-          <div id="jsVectorMap" className="mb-5 mt-4">
-            <h4>jsVectorMap</h4>
-            <Card className="mt-3">
-              <CardBody>
-                <div id="jvectorMap" style={{ height: "300px" }}></div>
               </CardBody>
             </Card>
           </div>

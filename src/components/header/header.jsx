@@ -107,9 +107,9 @@ function Header() {
       <div className="brand">
         <Link to="/" className="brand-logo">
           <span className="brand-img">
-            <span className="brand-img-text text-theme">H</span>
+            <span className="brand-img-text text-theme">C</span>
           </span>
-          <span className="brand-text">HUD ADMIN</span>
+          <span className="brand-text">COMMUNICATION</span>
         </Link>
       </div>
 
@@ -140,10 +140,9 @@ function Header() {
                   className="dropdown-item text-decoration-none p-3 bg-none"
                 >
                   <div className="position-relative">
-                    <i className="bi bi-circle-fill position-absolute text-theme top-0 mt-n2 me-n2 fs-6px d-block text-center w-100"></i>
-                    <i className="bi bi-envelope h2 opacity-5 d-block my-1"></i>
+                    <i className="bi bi-twitter h2 opacity-5 d-block my-1"></i>
                   </div>
-                  <div className="fw-500 fs-10px text-inverse">INBOX</div>
+                  <div className="fw-500 fs-10px text-inverse">TWITTER</div>
                 </Link>
               </div>
               <div className="col-4">
@@ -152,9 +151,9 @@ function Header() {
                   className="dropdown-item text-decoration-none p-3 bg-none"
                 >
                   <div>
-                    <i className="bi bi-hdd-network h2 opacity-5 d-block my-1"></i>
+                    <i className="bi bi-telegram h2 opacity-5 d-block my-1"></i>
                   </div>
-                  <div className="fw-500 fs-10px text-inverse">POS SYSTEM</div>
+                  <div className="fw-500 fs-10px text-inverse">TELEGRAM</div>
                 </Link>
               </div>
               <div className="col-4">
@@ -163,51 +162,15 @@ function Header() {
                   className="dropdown-item text-decoration-none p-3 bg-none"
                 >
                   <div>
-                    <i className="bi bi-calendar4 h2 opacity-5 d-block my-1"></i>
+                    <i className="fa fa-chart-line h2 opacity-5 d-block my-1"></i>
                   </div>
-                  <div className="fw-500 fs-10px text-inverse">CALENDAR</div>
-                </Link>
-              </div>
-            </div>
-            <div className="row row-grid gx-0">
-              <div className="col-4">
-                <Link
-                  to="/helper"
-                  className="dropdown-item text-decoration-none p-3 bg-none"
-                >
-                  <div>
-                    <i className="bi bi-terminal h2 opacity-5 d-block my-1"></i>
-                  </div>
-                  <div className="fw-500 fs-10px text-inverse">HELPER</div>
-                </Link>
-              </div>
-              <div className="col-4">
-                <Link
-                  to="/settings"
-                  className="dropdown-item text-decoration-none p-3 bg-none"
-                >
-                  <div className="position-relative">
-                    <i className="bi bi-circle-fill position-absolute text-theme top-0 mt-n2 me-n2 fs-6px d-block text-center w-100"></i>
-                    <i className="bi bi-sliders h2 opacity-5 d-block my-1"></i>
-                  </div>
-                  <div className="fw-500 fs-10px text-inverse">SETTINGS</div>
-                </Link>
-              </div>
-              <div className="col-4">
-                <Link
-                  to="/widgets"
-                  className="dropdown-item text-decoration-none p-3 bg-none"
-                >
-                  <div>
-                    <i className="bi bi-collection-play h2 opacity-5 d-block my-1"></i>
-                  </div>
-                  <div className="fw-500 fs-10px text-inverse">WIDGETS</div>
+                  <div className="fw-500 fs-10px text-inverse">DEXTOOLS</div>
                 </Link>
               </div>
             </div>
           </div>
         </div>
-        <div className="menu-item dropdown dropdown-mobile-full">
+        {/* <div className="menu-item dropdown dropdown-mobile-full">
           <a
             href="#/"
             data-bs-toggle="dropdown"
@@ -257,8 +220,8 @@ function Header() {
               </a>
             </div>
           </div>
-        </div>
-        <div className="menu-item dropdown dropdown-mobile-full">
+        </div> */}
+        {/* <div className="menu-item dropdown dropdown-mobile-full">
           <a
             href="#/"
             data-bs-toggle="dropdown"
@@ -312,7 +275,7 @@ function Header() {
               <i className="bi bi-toggle-off ms-auto text-theme fs-16px my-n1"></i>
             </Link>
           </div>
-        </div>
+        </div> */}
         <div className="p-3 pt-0 pb-0 pl-0">
           <a
             href="#/"

@@ -4,9 +4,9 @@ import { Card, CardBody } from './../card/card.jsx';
 function ThemePanel() {
 	const [active, setActive] = useState(0);
 	const [mode, setMode] = useState((localStorage && typeof localStorage.appMode !== 'undefined') ?  localStorage.appMode : 'dark');
-	const [theme, setTheme] = useState((localStorage && typeof localStorage.appTheme !== 'undefined') ?  localStorage.appTheme : 'theme-teal');
+	const [theme, setTheme] = useState((localStorage && typeof localStorage.appTheme !== 'undefined') ?  localStorage.appTheme : 'theme-red');
 	const [cover, setCover] = useState((localStorage && typeof localStorage.appCover !== 'undefined') ?  localStorage.appCover : '');
-	
+	console.log(theme, 'theme')
 	const toggleAppThemePanel = (event) => {
 		event.preventDefault();
 		
@@ -89,7 +89,7 @@ function ThemePanel() {
 	];
 
 	const coverList = [
-		{ name: 'Default', coverThumbImage: '/assets/img/cover/cover-thumb-1.jpg', coverClass: ''},
+		{ name: 'Default', coverThumbImage: '/assets/img/cover/cover-thumb-1_red.jpg', coverClass: ''},
 		{ name: 'Cover 2', coverThumbImage: '/assets/img/cover/cover-thumb-2.jpg', coverClass: 'bg-cover-2'},
 		{ name: 'Cover 3', coverThumbImage: '/assets/img/cover/cover-thumb-3.jpg', coverClass: 'bg-cover-3'},
 		{ name: 'Cover 4', coverThumbImage: '/assets/img/cover/cover-thumb-4.jpg', coverClass: 'bg-cover-4'},
