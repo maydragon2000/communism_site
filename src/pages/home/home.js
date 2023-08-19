@@ -133,8 +133,8 @@ function Home() {
             <div className="d-flex fw-bold small mb-3 justify-content-end">
               <CardExpandToggler />
             </div>
-            <div className="row mb-2 d-flex">
-              <div className="col-3 coming-soon-timer text-center">
+            <div className="row mb-2 d-flex flex-wrap top_info">
+              <div className="col-xl-3 col-lg-6 coming-soon-timer text-center">
                 <Countdown
                   date={Date.now() + 1000000000}
                   renderer={(props) => (
@@ -161,13 +161,13 @@ function Home() {
                   )}
                 />
               </div>
-              <div className="col-3 total_info">
+              <div className="col-xl-3 col-lg-6 total_info">
                 <p>Hoders</p>
               </div>
-              <div className="col-3 total_info">
+              <div className="col-xl-3 col-lg-6 total_info">
                 <p>Transactions</p>
               </div>
-              <div className="col-3 total_info">
+              <div className="col-xl-3 col-lg-6 total_info">
                 <p>Volumn</p>
               </div>
             </div>
@@ -225,9 +225,28 @@ function Home() {
         <div id="jsVectorMap" className="map_spread mt-4">
           <h2>Map-Spread Communism</h2>
           <Card>
-            <CardBody>
-              <div className="d-flex fw-bold small mb-3 justify-content-end">
+            <CardBody className="group_body">
+              <div className="d-flex fw-bold small mb-3 justify-content-end map_wrap">
                 <div id="jvectorMap" style={{ height: "300px" }}></div>
+              </div>
+              <div className="text_box">
+                <p>
+                  Sed ut perspiciatis unde omnis iste natus error sit voluptatem
+                  accusantium doloremque laudantium, totam rem aperiam, eaque
+                  ipsa quae ab illo inventore veritatis et quasi architecto
+                  beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem
+                  quia voluptas sit aspernatur aut odit aut fugit, sed quia
+                  consequuntur magni dolores eos qui ratione voluptatem sequi
+                  nesciunt. Neque porro quisquam est, qui dolorem ipsum quia
+                  dolor sit amet, consectetur, adipisci velit, sed quia non
+                  numquam eius modi tempora incidunt ut labore et dolore magnam
+                  aliquam quaerat voluptatem. Ut enim ad minima veniam, quis
+                  nostrum exercitationem ullam corporis suscipit laboriosam,
+                  nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum
+                  iure reprehenderit qui in ea voluptate velit esse quam nihil
+                  molestiae consequatur, vel illum qui dolorem eum fugiat quo
+                  voluptas nulla pariatur?
+                </p>
               </div>
             </CardBody>
           </Card>
