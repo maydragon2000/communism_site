@@ -163,12 +163,15 @@ function Home() {
               </div>
               <div className="col-xl-3 col-lg-6 total_info">
                 <p>Hoders</p>
+                <label>5M+</label>
               </div>
               <div className="col-xl-3 col-lg-6 total_info">
                 <p>Transactions</p>
+                <label>12M+</label>
               </div>
               <div className="col-xl-3 col-lg-6 total_info">
-                <p>Volumn</p>
+                <p>Total Volume</p>
+                <label>41,423,242 ETH</label>
               </div>
             </div>
           </CardBody>
@@ -181,10 +184,11 @@ function Home() {
               </div>
               <p>5% Buy and Sell Tax</p>
               <p>
-                4% is pragmatically redistributed to the holders in the form of
-                ETH.
+                4% is pragmatically and proportionally redistributed to the
+                holders in the form of ETH that you can claim whenever you want
+                as it accumulates.
               </p>
-              <p>1% goes to marketing</p>
+              <p>1% Goes to Taking Over The World</p>
             </CardBody>
           </Card>
         </div>
@@ -195,6 +199,9 @@ function Home() {
                 <span className="flex-grow-1">ETH Claimed</span>
                 <CardExpandToggler />
               </div>
+              <div className="info_list">
+                <label>23,242 ETH</label>
+              </div>
             </CardBody>
           </Card>
           <Card>
@@ -202,6 +209,23 @@ function Home() {
               <div className="d-flex fw-bold small mb-3 justify-content-end">
                 <span className="flex-grow-1">Biggest Claims</span>
                 <CardExpandToggler />
+              </div>
+              <div className="info_list">
+                <a href="https://etherscan.io/tx/0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033">
+                  0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033
+                </a>
+                <a href="https://etherscan.io/tx/0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033">
+                  0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033
+                </a>
+                <a href="https://etherscan.io/tx/0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033">
+                  0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033
+                </a>
+                <a href="https://etherscan.io/tx/0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033">
+                  0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033
+                </a>
+                <a href="https://etherscan.io/tx/0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033">
+                  0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033
+                </a>
               </div>
             </CardBody>
           </Card>
@@ -211,13 +235,33 @@ function Home() {
                 <span className="flex-grow-1">Biggest Buys</span>
                 <CardExpandToggler />
               </div>
+              <div className="info_list">
+                <a href="https://etherscan.io/tx/0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033">
+                  0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033
+                </a>
+                <a href="https://etherscan.io/tx/0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033">
+                  0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033
+                </a>
+                <a href="https://etherscan.io/tx/0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033">
+                  0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033
+                </a>
+                <a href="https://etherscan.io/tx/0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033">
+                  0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033
+                </a>
+                <a href="https://etherscan.io/tx/0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033">
+                  0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033
+                </a>
+              </div>
             </CardBody>
           </Card>
           <Card>
             <CardBody>
               <div className="d-flex fw-bold small mb-3 justify-content-end">
-                <span className="flex-grow-1">Top Holds</span>
+                <span className="flex-grow-1">Total Burned</span>
                 <CardExpandToggler />
+              </div>
+              <div className="info_list">
+                <label>220000 $communism</label>
               </div>
             </CardBody>
           </Card>
@@ -260,6 +304,7 @@ function Home() {
                   <span className="flex-grow-1">Total Communism</span>
                   <CardExpandToggler />
                 </div>
+                <label>220000 $communism</label>
               </CardBody>
             </Card>
             <Card>
@@ -268,6 +313,7 @@ function Home() {
                   <span className="flex-grow-1">Claimed ETH</span>
                   <CardExpandToggler />
                 </div>
+                <label>23,242 ETH</label>
               </CardBody>
             </Card>
             <Card>
@@ -276,17 +322,19 @@ function Home() {
                   <span className="flex-grow-1">ETH to be Claimed</span>
                   <CardExpandToggler />
                 </div>
+                <label>23,242 ETH</label>
               </CardBody>
             </Card>
             <Card>
               <CardBody>
                 <div className="d-flex fw-bold small mb-3 justify-content-end">
                   <span className="flex-grow-1">
-                    Most hold of Least * Communism to be eligible
+                    Must Hold at Least 10,000 Communism to be Eligible to Claim
+                    ETH
                   </span>
                   <CardExpandToggler />
                 </div>
-                <p></p>
+                <label>23,242 ETH</label>
               </CardBody>
             </Card>
           </div>
