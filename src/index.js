@@ -5,6 +5,8 @@ import { Web3ReactProvider } from "@web3-react/core";
 import Web3 from "web3";
 import AppRoute from "./config/app-route.jsx";
 import { slideToggle } from "./composables/slideToggle.js";
+import { Provider } from "react-redux";
+import store from "./redux/store";
 
 // bootstrap
 import "bootstrap";
@@ -43,8 +45,10 @@ function App() {
 
 root.render(
   <Web3ReactProvider getLibrary={getLibrary}>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <Provider store={store}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </Provider>
   </Web3ReactProvider>
 );

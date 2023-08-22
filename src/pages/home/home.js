@@ -1,15 +1,27 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
+import Countdown from "react-countdown";
+import jsVectorMap from "jsvectormap";
+import "jsvectormap/dist/maps/world.js";
+import "jsvectormap/dist/css/jsvectormap.min.css";
+import { useSelector } from "react-redux";
+
 import {
   Card,
   CardBody,
   CardExpandToggler,
 } from "./../../components/card/card.jsx";
-import Countdown from "react-countdown";
-import jsVectorMap from "jsvectormap";
-import "jsvectormap/dist/maps/world.js";
-import "jsvectormap/dist/css/jsvectormap.min.css";
 
 function Home() {
+  const {
+    nextAvailableDate,
+    totalETHClaimed,
+    balance,
+    personalClaimedETH,
+    ethToBeClaimed,
+    burnedBalance,
+  } = useSelector((state) => state.tokens);
+
+  const countdownRef = useRef(null);
   function renderMap() {
     var theme = getComputedStyle(document.body)
       .getPropertyValue("--bs-theme")
@@ -111,11 +123,17 @@ function Home() {
 
   useEffect(() => {
     renderMap();
-
     document.addEventListener("theme-reload", () => {
       renderMap();
     });
   }, []);
+
+  useEffect(() => {
+    if (countdownRef.current) {
+      countdownRef.current.start();
+    }
+  }, [nextAvailableDate]);
+
   return (
     <div className="home">
       <ul className="breadcrumb">
@@ -136,12 +154,19 @@ function Home() {
             <div className="row mb-2 d-flex flex-wrap top_info">
               <div className="col-xl-3 col-lg-6 coming-soon-timer text-center">
                 <Countdown
-                  date={Date.now() + 1000000000}
+                  date={
+                    nextAvailableDate
+                      ? parseInt(nextAvailableDate) * 1000
+                      : Date.now()
+                  }
+                  ref={countdownRef}
                   renderer={(props) => (
                     <div className="is-countdown">
                       <div className="countdown-row countdown-show4">
                         <div className="countdown-section">
-                          <div className="countdown-amount">{props.hours}</div>
+                          <div className="countdown-amount">
+                            {props.days * 24 + props.hours}
+                          </div>
                           <div className="countdown-period">Hours</div>
                         </div>
                         <div className="countdown-section">
@@ -200,7 +225,7 @@ function Home() {
                 <CardExpandToggler />
               </div>
               <div className="info_list">
-                <label>23,242 ETH</label>
+                <label>{totalETHClaimed} ETH</label>
               </div>
             </CardBody>
           </Card>
@@ -261,7 +286,7 @@ function Home() {
                 <CardExpandToggler />
               </div>
               <div className="info_list">
-                <label>220000 $communism</label>
+                <label>{burnedBalance} $communism</label>
               </div>
             </CardBody>
           </Card>
@@ -304,7 +329,7 @@ function Home() {
                   <span className="flex-grow-1">Total Communism</span>
                   <CardExpandToggler />
                 </div>
-                <label>220000 $communism</label>
+                <label>{balance} $communism</label>
               </CardBody>
             </Card>
             <Card>
@@ -313,7 +338,7 @@ function Home() {
                   <span className="flex-grow-1">Claimed ETH</span>
                   <CardExpandToggler />
                 </div>
-                <label>23,242 ETH</label>
+                <label>{personalClaimedETH} ETH</label>
               </CardBody>
             </Card>
             <Card>
@@ -322,7 +347,7 @@ function Home() {
                   <span className="flex-grow-1">ETH to be Claimed</span>
                   <CardExpandToggler />
                 </div>
-                <label>23,242 ETH</label>
+                <label>{ethToBeClaimed} ETH</label>
               </CardBody>
             </Card>
             <Card>

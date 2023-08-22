@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useWeb3React } from "@web3-react/core";
+import { useDispatch } from "react-redux";
 
 import { slideToggle } from "./../../composables/slideToggle.js";
 import { injected } from "../../wallet/Connect";
+import { BURNED_BALANCE, ETH_TO_BE_CLAIMED, NEXT_CLAIM_DATE, PERSONAL_CLAIMED_ETH, TOTAL_ETH_CLAIMED, WALLET_BALANCE } from "../../redux/constants/index.js";
+import { getBalance, getBurnedBalance, getETHToBeClaimed, getNextClaimDate, getPersonalClaimedETH, getTotalETHClaimed } from "../../api/CommunismWeb3.js";
 
 function Header() {
-  const { active, account, activate, deactivate } = useWeb3React();
+  const { active, account,library, activate, deactivate } = useWeb3React();
   const [buttonValue, setButtonValue] = useState("");
+
+  const dispatch = useDispatch();
 
   const checkIfWalletIsConnected = async () => {
     try {
@@ -17,9 +22,25 @@ function Header() {
     }
   };
 
+  const getDefaultValue = async () => {
+    const claimDate = await getNextClaimDate(active, account, library);
+    const toTalETHClaimed = await getTotalETHClaimed(active, account, library);
+    const balance = await getBalance(active, account, library);
+    const personalClaimedETH = await getPersonalClaimedETH(active, account, library);
+    const ethToBeClaimed = await getETHToBeClaimed(active, account, library);
+    const burnedBalance = await getBurnedBalance(active, account, library);
+    dispatch({type: NEXT_CLAIM_DATE, payload: claimDate});
+    dispatch({type: TOTAL_ETH_CLAIMED, payload: toTalETHClaimed});
+    dispatch({type: WALLET_BALANCE, payload: balance});
+    dispatch({type: PERSONAL_CLAIMED_ETH, payload: personalClaimedETH});
+    dispatch({type: ETH_TO_BE_CLAIMED, payload: ethToBeClaimed});
+    dispatch({type: BURNED_BALANCE, payload: burnedBalance})
+  }
+
   useEffect(() => {
     checkIfWalletIsConnected();
     // eslint-disable-next-line react-hooks/exhaustive-deps
+    getDefaultValue();
   }, []);
 
   useEffect(() => {
@@ -31,6 +52,10 @@ function Header() {
       setButtonValue("Connect Wallet");
     }
   }, [active, account]);
+
+  useEffect(() => {
+    getDefaultValue();
+  },[active])
 
   const onClickConnect = async () => {
     try {
