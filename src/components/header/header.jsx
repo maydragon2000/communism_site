@@ -38,7 +38,7 @@ function Header() {
   }
 
   useEffect(() => {
-    checkIfWalletIsConnected();
+    // checkIfWalletIsConnected();
     // eslint-disable-next-line react-hooks/exhaustive-deps
     getDefaultValue();
   }, []);

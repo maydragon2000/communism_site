@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Countdown from "react-countdown";
 import jsVectorMap from "jsvectormap";
 import "jsvectormap/dist/maps/world.js";
@@ -20,6 +20,9 @@ function Home() {
     ethToBeClaimed,
     burnedBalance,
   } = useSelector((state) => state.tokens);
+
+  const [totalTransactions, setTotalTransactions] = useState(0);
+  const [totalVolume, setTotalVolume] = useState(0);
 
   const countdownRef = useRef(null);
   function renderMap() {
@@ -121,11 +124,140 @@ function Home() {
     }
   }
 
+  const getTotalTransactions = () => {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("X-API-KEY", "BQYWk4roYCgJJdkq6Ului01dWlHJ5P9z");
+
+    var raw = JSON.stringify({
+      query:
+        'query MyQuery {\n  ethereum(network: goerli) {\n    smartContractEvents(\n      smartContractAddress: {is: "0x6ea07e94b6e0921298f0193B0f9E11F2593e67a3"}\n      smartContractEvent: {is: "Transfer"}\n    ) {\n      count\n    }\n  }\n}\n',
+      variables: "{}",
+    });
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+    fetch("https://graphql.bitquery.io", requestOptions)
+      .then(async (res) => {
+        const { data } = await res.json();
+        console.log(data, "data");
+        setTotalTransactions(data.ethereum?.smartContractEvents[0].count);
+      })
+      .catch((error) => console.log("error", error));
+  };
+
+  const getTotalHolders = () => {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("X-API-KEY", "BQYWk4roYCgJJdkq6Ului01dWlHJ5P9z");
+
+    var raw = JSON.stringify({
+      query:
+        'query MyQuery {\n  EVM(network: eth, dataset: combined) {\n    BalanceUpdates(\n      where: {Currency: {SmartContract: {is: "0xdAC17F958D2ee523a2206206994597C13D831ec7"}}}\n    ){\n      No_Holders: count(distinct: BalanceUpdate_Address)\n    }\n  }\n}\n',
+      variables: "{}",
+    });
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    fetch("https://streaming.bitquery.io/graphql", requestOptions)
+      .then((response) => response.text())
+      .then((result) => console.log(result, "result"))
+      .catch((error) => console.log("error", error));
+  };
+
+  const getTotalVolume = () => {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("X-API-KEY", "BQYWk4roYCgJJdkq6Ului01dWlHJ5P9z");
+
+    var raw = JSON.stringify({
+      query:
+        'query MyQuery {\n  ethereum(network: goerli) {\n    dexTrades(\n      baseCurrency: {is: "0x6ea07e94b6e0921298f0193B0f9E11F2593e67a3"}\n    ) {\n      quoteAmount(in: ETH)\n    }\n  }\n}\n',
+      variables: "{}",
+    });
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    fetch("https://graphql.bitquery.io", requestOptions)
+      .then(async (res) => {
+        const { data } = await res.json();
+        console.log(data, "data");
+        setTotalVolume(data.ethereum?.dexTrades[0].quoteAmount);
+      })
+      .catch((error) => console.log("error", error));
+  };
+
+  const getBiggestBuys = () => {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("X-API-KEY", "BQYWk4roYCgJJdkq6Ului01dWlHJ5P9z");
+
+    var raw = JSON.stringify({
+      query:
+        'query MyQuery {\n  ethereum(network: goerli) {\n    dexTrades(\n      baseCurrency: {is: "0x6ea07e94b6e0921298f0193B0f9E11F2593e67a3"}\n      buyCurrency: {is: "0x6ea07e94b6e0921298f0193B0f9E11F2593e67a3"}\n      options: {desc: ["tradeAmount"], limit: 10}\n    ) {\n      transaction {\n        hash\n      }\n      tradeAmount(in: USD)\n      buyAmount\n    }\n  }\n}\n',
+      variables: "{}",
+    });
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    fetch("https://graphql.bitquery.io", requestOptions)
+      .then((response) => response.text())
+      .then((result) => console.log(result))
+      .catch((error) => console.log("error", error));
+  };
+
+  const getBiggestClaims = () => {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("X-API-KEY", "BQYWk4roYCgJJdkq6Ului01dWlHJ5P9z");
+
+    var raw = JSON.stringify({
+      query:
+        'query MyQuery {\n  ethereum(network: goerli) {\n    arguments(\n      options: {desc: ["value.value"]}\n      smartContractAddress: {in: "0x6ea07e94b6e0921298f0193B0f9E11F2593e67a3"}\n      smartContractEvent: {is: "ClaimETHSuccessfully"}\n      argument: {is: "ethReceived"}\n    ){\n      block {\n        height\n      }\n      argument{\n        name\n      }\n      value{\n        value\n      }\n      transaction {\n        hash\n      }\n    }\n  }\n}\n',
+      variables: "{}",
+    });
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    fetch("https://graphql.bitquery.io", requestOptions)
+      .then((response) => response.text())
+      .then((result) => console.log(result, "result"))
+      .catch((error) => console.log("error", error));
+  };
+
   useEffect(() => {
     renderMap();
     document.addEventListener("theme-reload", () => {
       renderMap();
     });
+    // getTotalTransactions();
+    // getTotalHolders();
+    // getTotalVolume();
+    // getBiggestClaims();
   }, []);
 
   useEffect(() => {
@@ -187,16 +319,16 @@ function Home() {
                 />
               </div>
               <div className="col-xl-3 col-lg-6 total_info">
-                <p>Hoders</p>
+                <p>Holders</p>
                 <label>5M+</label>
               </div>
               <div className="col-xl-3 col-lg-6 total_info">
                 <p>Transactions</p>
-                <label>12M+</label>
+                <label>{totalTransactions}</label>
               </div>
               <div className="col-xl-3 col-lg-6 total_info">
                 <p>Total Volume</p>
-                <label>41,423,242 ETH</label>
+                <label>{totalVolume} ETH</label>
               </div>
             </div>
           </CardBody>
@@ -350,18 +482,48 @@ function Home() {
                 <label>{ethToBeClaimed} ETH</label>
               </CardBody>
             </Card>
-            <Card>
+            {/* <Card>
               <CardBody>
                 <div className="d-flex fw-bold small mb-3 justify-content-end">
-                  <span className="flex-grow-1">
-                    Must Hold at Least 10,000 Communism to be Eligible to Claim
-                    ETH
-                  </span>
+                  <span className="flex-grow-1">Next available claim</span>
                   <CardExpandToggler />
                 </div>
-                <label>23,242 ETH</label>
+                <div className="coming-soon-timer text-center">
+                  <Countdown
+                    date={
+                      nextAvailableDate
+                        ? parseInt(nextAvailableDate) * 1000
+                        : Date.now()
+                    }
+                    ref={countdownRef}
+                    renderer={(props) => (
+                      <div className="is-countdown">
+                        <div className="countdown-row countdown-show4">
+                          <div className="countdown-section">
+                            <div className="countdown-amount">
+                              {props.days * 24 + props.hours}
+                            </div>
+                            <div className="countdown-period">Hours</div>
+                          </div>
+                          <div className="countdown-section">
+                            <div className="countdown-amount">
+                              {props.minutes}
+                            </div>
+                            <div className="countdown-period">Minutes</div>
+                          </div>
+                          <div className="countdown-section">
+                            <div className="countdown-amount">
+                              {props.seconds}
+                            </div>
+                            <div className="countdown-period">Seconds</div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  />
+                </div>
               </CardBody>
-            </Card>
+            </Card> */}
           </div>
         </div>
       </div>

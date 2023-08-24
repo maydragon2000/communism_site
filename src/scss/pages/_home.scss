@@ -8,62 +8,63 @@ h2 {
   color: var(--bs-heading-color);
 }
 
-.top_info {
-  row-gap: 20px;
-  .coming-soon-timer {
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    .is-countdown {
-      background: none;
-      border: none;
-      margin: 0;
+.coming-soon-timer {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  .is-countdown {
+    background: none;
+    border: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    @include clearfix();
+
+    & .countdown-row {
       padding: 0;
-      width: 100%;
-      @include clearfix();
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
-      & .countdown-row {
-        padding: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+      & .countdown-section {
+        width: 32%;
+        max-width: rem(80px);
+        padding: $spacer * 0.5;
+        background: rgba(var(--#{$prefix}inverse-rgb), 0.15);
+        margin: $spacer * 0.25;
+        color: var(--#{$prefix}inverse);
+        border-radius: $border-radius-lg;
 
-        & .countdown-section {
-          width: 32%;
-          max-width: rem(80px);
-          padding: $spacer * 0.5;
-          background: rgba(var(--#{$prefix}inverse-rgb), 0.15);
+        @include media-breakpoint-down(sm) {
+          width: rem(80px);
+          padding: $spacer * 0.5 0;
           margin: $spacer * 0.25;
-          color: var(--#{$prefix}inverse);
-          border-radius: $border-radius-lg;
-
-          @include media-breakpoint-down(sm) {
-            width: rem(80px);
-            padding: $spacer * 0.5 0;
-            margin: $spacer * 0.25;
-          }
-        }
-      }
-      & .countdown-amount {
-        font-size: rem(28px);
-        font-weight: $font-weight-bold;
-        line-height: 1.25;
-
-        @include media-breakpoint-down(sm) {
-          font-size: rem(28px);
-        }
-      }
-      & .countdown-period {
-        font-size: $font-size-base * 0.9;
-        color: rgba(var(--#{$prefix}inverse-rgb), 0.75);
-        line-height: 1.5;
-
-        @include media-breakpoint-down(sm) {
-          font-size: $font-size-base * 0.9;
         }
       }
     }
+    & .countdown-amount {
+      font-size: rem(28px);
+      font-weight: $font-weight-bold;
+      line-height: 1.25;
+
+      @include media-breakpoint-down(sm) {
+        font-size: rem(28px);
+      }
+    }
+    & .countdown-period {
+      font-size: $font-size-base * 0.9;
+      color: rgba(var(--#{$prefix}inverse-rgb), 0.75);
+      line-height: 1.5;
+
+      @include media-breakpoint-down(sm) {
+        font-size: $font-size-base * 0.9;
+      }
+    }
   }
+}
+
+.top_info {
+  row-gap: 20px;
 
   .total_info {
     display: flex;
@@ -189,10 +190,10 @@ h2 {
     flex-wrap: wrap;
     row-gap: 20px;
     .card {
-      width: 24%;
+      width: 32%;
       min-height: 200px;
       @include media-breakpoint-down(xl) {
-        width: 49%;
+        width: 33%;
       }
       @include media-breakpoint-down(lg) {
         width: 100%;
