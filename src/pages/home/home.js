@@ -285,6 +285,7 @@ function Home() {
             </div>
             <div className="row mb-2 d-flex flex-wrap top_info">
               <div className="col-xl-3 col-lg-6 coming-soon-timer text-center">
+                <span>Next Claim Available</span>
                 <Countdown
                   date={
                     nextAvailableDate

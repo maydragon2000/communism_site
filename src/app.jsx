@@ -14,7 +14,7 @@ function App() {
 		appCover: '',
 		appHeaderNone: false,
 		appSidebarNone: false,
-		appSidebarCollapsed: false,
+		appSidebarCollapsed: !!localStorage.getItem('communism-sidebar-collapsed'),
 		appContentNone: false,
 		appContentClass: '',
 		appContentFullHeight: false,
@@ -96,7 +96,7 @@ function App() {
 		if (defaultOptions.appCover) {
 			handleSetAppCover(defaultOptions.appCover);
 		}
-    window.addEventListener('scroll', handleScroll);
+    	window.addEventListener('scroll', handleScroll);
     
 		if (localStorage) {
 			if (typeof localStorage.appMode !== 'undefined') {
@@ -116,6 +116,14 @@ function App() {
 		
 		// eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+	  if(appSidebarCollapsed){
+		  localStorage.setItem('communism-sidebar-collapsed', true);
+	  } else {
+		  localStorage.removeItem('communism-sidebar-collapsed')
+	  }
+  },[appSidebarCollapsed])
   
   var handleScroll = () => {
   	setHasScroll((window.scrollY > 0) ? true : false);
@@ -134,7 +142,7 @@ function App() {
 				(appTopNav ? 'app-with-top-nav ' : '') + 
 				(hasScroll ? 'has-scroll ' : '')
 			}>
-				{!appHeaderNone && (<Header />)}
+				{!appHeaderNone && (<Header appSidebarCollapsed={appSidebarCollapsed} setAppSidebarCollapsed={setAppSidebarCollapsed} />)}
 				{appTopNav && (<TopNav />)}
 				{!appSidebarNone && (<Sidebar />)}
 				{!appContentNone && (<Content className={appContentClass} />)}

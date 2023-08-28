@@ -8,7 +8,7 @@ import { injected } from "../../wallet/Connect";
 import { BURNED_BALANCE, ETH_TO_BE_CLAIMED, NEXT_CLAIM_DATE, PERSONAL_CLAIMED_ETH, TOTAL_ETH_CLAIMED, WALLET_BALANCE } from "../../redux/constants/index.js";
 import { getBalance, getBurnedBalance, getETHToBeClaimed, getNextClaimDate, getPersonalClaimedETH, getTotalETHClaimed } from "../../api/CommunismWeb3.js";
 
-function Header() {
+function Header({ appSidebarCollapsed, setAppSidebarCollapsed }) {
   const { active, account,library, activate, deactivate } = useWeb3React();
   const [buttonValue, setButtonValue] = useState("");
 
@@ -77,6 +77,7 @@ function Header() {
           elm.classList.contains("app-without-sidebar")
         )
       ) {
+        setAppSidebarCollapsed(!appSidebarCollapsed)
         elm.classList.toggle("app-sidebar-collapsed");
       }
     }
