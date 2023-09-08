@@ -60,6 +60,7 @@
     "react-dom": "^18.2.0",
     "react-highlight": "^0.15.0",
     "react-input-mask": "^2.0.4",
+    "react-loader-spinner": "^5.4.5",
     "react-perfect-scrollbar": "^1.5.8",
     "react-quill": "^2.0.0",
     "react-redux": "^8.1.2",

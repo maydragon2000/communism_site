@@ -97,6 +97,44 @@ h2 {
   }
 }
 
+.video_info {
+  display: flex;
+  justify-content: center;
+  .card {
+    width: 800px;
+    &.card-expand {
+      width: 100%;
+    }
+    video {
+      width: 400px;
+      border-radius: 10px;
+      @include media-breakpoint-down(sm) {
+        width: 100%;
+      }
+    }
+    .audio_group {
+      video {
+        display: none;
+      }
+      .spinner {
+        position: absolute;
+        top: 200px;
+        @include media-breakpoint-down(sm) {
+          top: calc(50% - 40px);
+        }
+      }
+      img {
+        width: 400px;
+        height: 400px;
+        @include media-breakpoint-down(sm) {
+          width: 100%;
+          height: auto;
+        }
+      }
+    }
+  }
+}
+
 .buy_sell_info {
   display: flex;
   justify-content: center;

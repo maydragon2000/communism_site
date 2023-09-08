@@ -4,12 +4,16 @@ import jsVectorMap from "jsvectormap";
 import "jsvectormap/dist/maps/world.js";
 import "jsvectormap/dist/css/jsvectormap.min.css";
 import { useSelector } from "react-redux";
+import { Oval } from "react-loader-spinner";
 
 import {
   Card,
   CardBody,
   CardExpandToggler,
 } from "./../../components/card/card.jsx";
+
+import LoloVideo from "../../assets/lolol2.mp4";
+import VideoStartImgae from "../../assets/video-start.png";
 
 function Home() {
   const {
@@ -23,6 +27,7 @@ function Home() {
 
   const [totalTransactions, setTotalTransactions] = useState(0);
   const [totalVolume, setTotalVolume] = useState(0);
+  const [videoLoaded, setVideoLoaded] = useState(false);
 
   const countdownRef = useRef(null);
   function renderMap() {
@@ -50,7 +55,7 @@ function Home() {
       var markers = [
         { name: "Egypt", coords: [26.8206, 30.8025] },
         { name: "Russia", coords: [61.524, 105.3188] },
-        { name: "Canada", coords: [56.1304, -106.3468] },
+        // { name: "Canada", coords: [56.1304, -106.3468] },
         { name: "United States", coords: [37.0902, -95.7129] },
         { name: "Greenland", coords: [71.7069, -42.6043] },
         { name: "Brazil", coords: [-14.235, -51.9253] },
@@ -63,7 +68,7 @@ function Home() {
         hoverOpacity: 0.5,
         hoverColor: false,
         zoomOnScroll: false,
-        selectedRegions: ["US", "CA"],
+        selectedRegions: ["LA", "RU", "CN", "KP"],
         // regionsSelectable: true,
         series: {
           regions: [
@@ -123,6 +128,10 @@ function Home() {
       });
     }
   }
+
+  const handleVideoLoaded = () => {
+    setVideoLoaded(false);
+  };
 
   const getTotalTransactions = () => {
     var myHeaders = new Headers();
@@ -334,19 +343,64 @@ function Home() {
             </div>
           </CardBody>
         </Card>
+        <div className="video_info mt-4">
+          <Card>
+            <CardBody>
+              {/* {videoLoaded ? (
+                <div className="d-flex justify-content-center">
+                  <video autoPlay muted loop>
+                    <source src={LoloVideo} type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+              ) : (
+                <div className="d-flex justify-content-center audio_group">
+                  <img src={VideoStartImgae} alt="video start" />
+                  <Oval
+                    height={80}
+                    width={80}
+                    color="#e9f0e4"
+                    wrapperStyle={{}}
+                    wrapperClass="spinner"
+                    visible={true}
+                    ariaLabel="oval-loading"
+                    secondaryColor="#e9f0e4"
+                    strokeWidth={2}
+                    strokeWidthSecondary={2}
+                  />
+                  <video autoPlay muted loop onLoadedData={handleVideoLoaded}>
+                    <source src={LoloVideo} type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+              )} */}
+              <div className="d-flex justify-content-center">
+                <video controls>
+                  <source src={LoloVideo} type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+            </CardBody>
+          </Card>
+        </div>
         <div className="buy_sell_info mt-4">
           <Card>
             <CardBody>
               <div className="d-flex fw-bold small mb-3 justify-content-end">
                 <CardExpandToggler />
               </div>
-              <p>5% Buy and Sell Tax</p>
+              <p>13% Buy and Sell Tax</p>
               <p>
-                4% is pragmatically and proportionally redistributed to the
-                holders in the form of ETH that you can claim whenever you want
-                as it accumulates.
+                8% is pragmatically and proportionally redistributed to the
+                holders in the form of ETH that you can claim whenever your
+                claim timer reaches 0. This will rise to become the full
+                allocation of the taxes and will be voted on by the people to
+                raise or lower before the contract is renounced.
               </p>
-              <p>1% Goes to Taking Over The World</p>
+              <p>
+                5% Goes to Taking Over The World, and will be lowered to 1%
+                before we renounce the contract.
+              </p>
             </CardBody>
           </Card>
         </div>
