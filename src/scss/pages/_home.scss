@@ -99,14 +99,14 @@ h2 {
 
 .claim_buttons {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   column-gap: 2%;
   @include media-breakpoint-down(lg) {
     flex-direction: column;
     row-gap: 24px;
   }
   .card {
-    width: 48%;
+    width: 49%;
     position: relative;
     @include media-breakpoint-down(lg) {
       width: 100%;

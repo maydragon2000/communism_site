@@ -35,11 +35,9 @@ function Header({ appSidebarCollapsed, setAppSidebarCollapsed }) {
   const dispatch = useDispatch();
 
   const [buttonValue, setButtonValue] = useState("");
-  const {
-    isETHClaimed,
-    isETHClaimFailed,
-    ethReceivedAmount,
-  } = useSelector((state) => state.tokens);
+  const { isETHClaimed, isETHClaimFailed, ethReceivedAmount } = useSelector(
+    (state) => state.tokens
+  );
 
   const checkIfWalletIsConnected = async () => {
     try {
@@ -89,9 +87,9 @@ function Header({ appSidebarCollapsed, setAppSidebarCollapsed }) {
   }, [active]);
 
   useEffect(() => {
-    dispatch(listenToClaimETHEvent());
-    dispatch(listenToClaimGambleETHEvent());
-  },[dispatch])
+    dispatch(listenToClaimETHEvent(active, account));
+    dispatch(listenToClaimGambleETHEvent(active, account));
+  }, [dispatch, active]);
 
   const onClickConnect = async () => {
     try {
@@ -103,7 +101,7 @@ function Header({ appSidebarCollapsed, setAppSidebarCollapsed }) {
   };
 
   useEffect(() => {
-    if(isETHClaimed || isETHClaimFailed){
+    if (isETHClaimed || isETHClaimFailed) {
       getDefaultValue();
     }
   }, [isETHClaimed, isETHClaimFailed]);
