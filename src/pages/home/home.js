@@ -3,8 +3,14 @@ import Countdown from "react-countdown";
 import jsVectorMap from "jsvectormap";
 import "jsvectormap/dist/maps/world.js";
 import "jsvectormap/dist/css/jsvectormap.min.css";
-import { useSelector } from "react-redux";
+import { useWeb3React } from "@web3-react/core";
+import { useSelector, useDispatch } from "react-redux";
 import { Oval } from "react-loader-spinner";
+import { claimETH, claimGambleETH } from "../../api/CommunismWeb3.js";
+import CircularProgress from "@mui/material/CircularProgress";
+import { ToastContainer, toast } from "react-toastify";
+
+import "react-toastify/dist/ReactToastify.css";
 
 import {
   Card,
@@ -13,7 +19,6 @@ import {
 } from "./../../components/card/card.jsx";
 
 import LoloVideo from "../../assets/lolol2.mp4";
-import VideoStartImgae from "../../assets/video-start.png";
 
 function Home() {
   const {
@@ -24,10 +29,14 @@ function Home() {
     ethToBeClaimed,
     burnedBalance,
   } = useSelector((state) => state.tokens);
+  const dispatch = useDispatch();
+  const { active, account, library } = useWeb3React();
 
   const [totalTransactions, setTotalTransactions] = useState(0);
   const [totalVolume, setTotalVolume] = useState(0);
   const [videoLoaded, setVideoLoaded] = useState(false);
+  const [isETHClaimLoading, setIsETHClaimLoading] = useState(false);
+  const [isETHGambleClaimLoading, setIsETHGambleClaimLoading] = useState(false);
 
   const countdownRef = useRef(null);
   function renderMap() {
@@ -258,6 +267,42 @@ function Home() {
       .catch((error) => console.log("error", error));
   };
 
+  const onClickClaimETH = async () => {
+    if (!active) {
+      toast.error("Please connet Wallet!", {
+        position: toast.POSITION.TOP_RIGHT,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        theme: "colored",
+      });
+      return;
+    }
+    setIsETHClaimLoading(true);
+    await claimETH(active, account, library, (status) => {
+      setIsETHClaimLoading(false);
+    });
+  };
+
+  // const onClickClaimETH = () => {};
+
+  const onClickClaimGambleETH = async () => {
+    if (!active) {
+      toast.error("Please connet Wallet!", {
+        position: toast.POSITION.TOP_RIGHT,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        theme: "colored",
+      });
+      return;
+    }
+    setIsETHGambleClaimLoading(true);
+    await claimGambleETH(active, account, library, (status) => {
+      setIsETHGambleClaimLoading(false);
+    });
+  };
+
   useEffect(() => {
     renderMap();
     document.addEventListener("theme-reload", () => {
@@ -285,24 +330,27 @@ function Home() {
       </ul>
 
       <h1 className="page-header header">Communism</h1>
-
-      <div>
-        <Card>
-          <CardBody>
-            <div className="d-flex fw-bold small mb-3 justify-content-end">
-              <CardExpandToggler />
-            </div>
-            <div className="row mb-2 d-flex flex-wrap top_info">
-              <div className="col-xl-3 col-lg-6 coming-soon-timer text-center">
-                <span>Next Claim Available</span>
-                <Countdown
-                  date={
-                    nextAvailableDate
-                      ? parseInt(nextAvailableDate) * 1000
-                      : Date.now()
-                  }
-                  ref={countdownRef}
-                  renderer={(props) => (
+      <ToastContainer
+        limit={3}
+        autoClose={5000}
+        hideProgressBar={true}
+        theme="colored"
+      />
+      <Countdown
+        date={
+          nextAvailableDate ? parseInt(nextAvailableDate) * 1000 : Date.now()
+        }
+        ref={countdownRef}
+        renderer={(props) => (
+          <div>
+            <Card>
+              <CardBody>
+                <div className="d-flex fw-bold small mb-3 justify-content-end">
+                  <CardExpandToggler />
+                </div>
+                <div className="row mb-2 d-flex flex-wrap top_info">
+                  <div className="col-xl-3 col-lg-6 coming-soon-timer text-center">
+                    <span>Next Claim Available</span>
                     <div className="is-countdown">
                       <div className="countdown-row countdown-show4">
                         <div className="countdown-section">
@@ -325,263 +373,268 @@ function Home() {
                         </div>
                       </div>
                     </div>
-                  )}
-                />
-              </div>
-              <div className="col-xl-3 col-lg-6 total_info">
-                <p>Holders</p>
-                <label>5M+</label>
-              </div>
-              <div className="col-xl-3 col-lg-6 total_info">
-                <p>Transactions</p>
-                <label>{totalTransactions}</label>
-              </div>
-              <div className="col-xl-3 col-lg-6 total_info">
-                <p>Total Volume</p>
-                <label>{totalVolume} ETH</label>
+                  </div>
+                  <div className="col-xl-3 col-lg-6 total_info">
+                    <p>Holders</p>
+                    <label>5M+</label>
+                  </div>
+                  <div className="col-xl-3 col-lg-6 total_info">
+                    <p>Transactions</p>
+                    <label>{totalTransactions}</label>
+                  </div>
+                  <div className="col-xl-3 col-lg-6 total_info">
+                    <p>Total Volume</p>
+                    <label>{totalVolume} ETH</label>
+                  </div>
+                </div>
+              </CardBody>
+            </Card>
+            <div className="claim_buttons mt-4">
+              <Card>
+                <CardBody>
+                  <div className="d-flex fw-bold small mb-3 justify-content-end">
+                    <span className="flex-grow-1">Claim ETH</span>
+                    <CardExpandToggler />
+                  </div>
+                  <div className="main">
+                    <p>
+                      comrades, you may select this option if you wish to
+                      receive your allocated rations this amount is visible at
+                      the bottom of the screen in the “Eth to be claimed”
+                      section
+                    </p>
+                    <button
+                      disabled={
+                        props.days +
+                          props.hours +
+                          props.minutes +
+                          props.seconds !==
+                        0
+                          ? true
+                          : isETHClaimLoading || isETHGambleClaimLoading
+                          ? true
+                          : false
+                      }
+                      onClick={onClickClaimETH}
+                    >
+                      {isETHClaimLoading ? (
+                        <CircularProgress className="circle" />
+                      ) : (
+                        "Claim ETH"
+                      )}
+                    </button>
+                  </div>
+                </CardBody>
+              </Card>
+              <Card>
+                <CardBody>
+                  <div className="d-flex fw-bold small mb-3 justify-content-end">
+                    <span className="flex-grow-1">Claim Gamble ETH</span>
+                    <CardExpandToggler />
+                  </div>
+                  <div className="main">
+                    <p>
+                      So you aren’t satisfied with the fruits of your labor ?
+                      Chance(50%) to seize the means of production and receive
+                      2X your allocated portion of rations. Chance(50%) of being
+                      caught insulting the current regime - receive 0 eth.
+                    </p>
+                    <button
+                      disabled={
+                        props.days +
+                          props.hours +
+                          props.minutes +
+                          props.seconds !==
+                        0
+                          ? true
+                          : isETHClaimLoading || isETHGambleClaimLoading
+                          ? true
+                          : false
+                      }
+                      onClick={onClickClaimGambleETH}
+                    >
+                      {isETHGambleClaimLoading ? (
+                        <CircularProgress className="circle" />
+                      ) : (
+                        "Claim Gamble ETH"
+                      )}
+                    </button>
+                  </div>
+                </CardBody>
+              </Card>
+            </div>
+            <div className="video_info mt-4">
+              <Card>
+                <CardBody>
+                  <div className="d-flex justify-content-center">
+                    <video controls>
+                      <source src={LoloVideo} type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
+                </CardBody>
+              </Card>
+            </div>
+            <div className="buy_sell_info mt-4">
+              <Card>
+                <CardBody>
+                  <div className="d-flex fw-bold small mb-3 justify-content-end">
+                    <CardExpandToggler />
+                  </div>
+                  <p>13% Buy and Sell Tax</p>
+                  <p>
+                    8% is pragmatically and proportionally redistributed to the
+                    holders in the form of ETH that you can claim whenever your
+                    claim timer reaches 0. This will rise to become the full
+                    allocation of the taxes and will be voted on by the people
+                    to raise or lower before the contract is renounced.
+                  </p>
+                  <p>
+                    5% Goes to Taking Over The World, and will be lowered to 1%
+                    before we renounce the contract.
+                  </p>
+                </CardBody>
+              </Card>
+            </div>
+            <div className="detail_info mt-4">
+              <Card>
+                <CardBody>
+                  <div className="d-flex fw-bold small mb-3 justify-content-end">
+                    <span className="flex-grow-1">ETH Claimed</span>
+                    <CardExpandToggler />
+                  </div>
+                  <div className="info_list">
+                    <label>{totalETHClaimed} ETH</label>
+                  </div>
+                </CardBody>
+              </Card>
+              <Card>
+                <CardBody>
+                  <div className="d-flex fw-bold small mb-3 justify-content-end">
+                    <span className="flex-grow-1">Biggest Claims</span>
+                    <CardExpandToggler />
+                  </div>
+                  <div className="info_list">
+                    <a href="https://etherscan.io/tx/0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033">
+                      0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033
+                    </a>
+                    <a href="https://etherscan.io/tx/0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033">
+                      0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033
+                    </a>
+                    <a href="https://etherscan.io/tx/0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033">
+                      0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033
+                    </a>
+                    <a href="https://etherscan.io/tx/0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033">
+                      0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033
+                    </a>
+                    <a href="https://etherscan.io/tx/0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033">
+                      0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033
+                    </a>
+                  </div>
+                </CardBody>
+              </Card>
+              <Card>
+                <CardBody>
+                  <div className="d-flex fw-bold small mb-3 justify-content-end">
+                    <span className="flex-grow-1">Biggest Buys</span>
+                    <CardExpandToggler />
+                  </div>
+                  <div className="info_list">
+                    <a href="https://etherscan.io/tx/0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033">
+                      0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033
+                    </a>
+                    <a href="https://etherscan.io/tx/0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033">
+                      0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033
+                    </a>
+                    <a href="https://etherscan.io/tx/0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033">
+                      0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033
+                    </a>
+                    <a href="https://etherscan.io/tx/0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033">
+                      0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033
+                    </a>
+                    <a href="https://etherscan.io/tx/0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033">
+                      0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033
+                    </a>
+                  </div>
+                </CardBody>
+              </Card>
+              <Card>
+                <CardBody>
+                  <div className="d-flex fw-bold small mb-3 justify-content-end">
+                    <span className="flex-grow-1">Total Burned</span>
+                    <CardExpandToggler />
+                  </div>
+                  <div className="info_list">
+                    <label>{burnedBalance} $communism</label>
+                  </div>
+                </CardBody>
+              </Card>
+            </div>
+            <div id="jsVectorMap" className="map_spread mt-4">
+              <h2>Map-Spread Communism</h2>
+              <Card>
+                <CardBody className="group_body">
+                  <div className="d-flex fw-bold small mb-3 justify-content-end map_wrap">
+                    <div id="jvectorMap" style={{ height: "300px" }}></div>
+                  </div>
+                  <div className="text_box">
+                    <p>
+                      Sed ut perspiciatis unde omnis iste natus error sit
+                      voluptatem accusantium doloremque laudantium, totam rem
+                      aperiam, eaque ipsa quae ab illo inventore veritatis et
+                      quasi architecto beatae vitae dicta sunt explicabo. Nemo
+                      enim ipsam voluptatem quia voluptas sit aspernatur aut
+                      odit aut fugit, sed quia consequuntur magni dolores eos
+                      qui ratione voluptatem sequi nesciunt. Neque porro
+                      quisquam est, qui dolorem ipsum quia dolor sit amet,
+                      consectetur, adipisci velit, sed quia non numquam eius
+                      modi tempora incidunt ut labore et dolore magnam aliquam
+                      quaerat voluptatem. Ut enim ad minima veniam, quis nostrum
+                      exercitationem ullam corporis suscipit laboriosam, nisi ut
+                      aliquid ex ea commodi consequatur? Quis autem vel eum iure
+                      reprehenderit qui in ea voluptate velit esse quam nihil
+                      molestiae consequatur, vel illum qui dolorem eum fugiat
+                      quo voluptas nulla pariatur?
+                    </p>
+                  </div>
+                </CardBody>
+              </Card>
+            </div>
+            <div className="personal_hoding mt-4">
+              <h2>Personal Holding</h2>
+              <div className="card_group">
+                <Card>
+                  <CardBody>
+                    <div className="d-flex fw-bold small mb-3 justify-content-end">
+                      <span className="flex-grow-1">Total Communism</span>
+                      <CardExpandToggler />
+                    </div>
+                    <label>{balance} $communism</label>
+                  </CardBody>
+                </Card>
+                <Card>
+                  <CardBody>
+                    <div className="d-flex fw-bold small mb-3 justify-content-end">
+                      <span className="flex-grow-1">Claimed ETH</span>
+                      <CardExpandToggler />
+                    </div>
+                    <label>{personalClaimedETH} ETH</label>
+                  </CardBody>
+                </Card>
+                <Card>
+                  <CardBody>
+                    <div className="d-flex fw-bold small mb-3 justify-content-end">
+                      <span className="flex-grow-1">ETH to be Claimed</span>
+                      <CardExpandToggler />
+                    </div>
+                    <label>{ethToBeClaimed} ETH</label>
+                  </CardBody>
+                </Card>
               </div>
             </div>
-          </CardBody>
-        </Card>
-        <div className="video_info mt-4">
-          <Card>
-            <CardBody>
-              {/* {videoLoaded ? (
-                <div className="d-flex justify-content-center">
-                  <video autoPlay muted loop>
-                    <source src={LoloVideo} type="video/mp4" />
-                    Your browser does not support the video tag.
-                  </video>
-                </div>
-              ) : (
-                <div className="d-flex justify-content-center audio_group">
-                  <img src={VideoStartImgae} alt="video start" />
-                  <Oval
-                    height={80}
-                    width={80}
-                    color="#e9f0e4"
-                    wrapperStyle={{}}
-                    wrapperClass="spinner"
-                    visible={true}
-                    ariaLabel="oval-loading"
-                    secondaryColor="#e9f0e4"
-                    strokeWidth={2}
-                    strokeWidthSecondary={2}
-                  />
-                  <video autoPlay muted loop onLoadedData={handleVideoLoaded}>
-                    <source src={LoloVideo} type="video/mp4" />
-                    Your browser does not support the video tag.
-                  </video>
-                </div>
-              )} */}
-              <div className="d-flex justify-content-center">
-                <video controls>
-                  <source src={LoloVideo} type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
-              </div>
-            </CardBody>
-          </Card>
-        </div>
-        <div className="buy_sell_info mt-4">
-          <Card>
-            <CardBody>
-              <div className="d-flex fw-bold small mb-3 justify-content-end">
-                <CardExpandToggler />
-              </div>
-              <p>13% Buy and Sell Tax</p>
-              <p>
-                8% is pragmatically and proportionally redistributed to the
-                holders in the form of ETH that you can claim whenever your
-                claim timer reaches 0. This will rise to become the full
-                allocation of the taxes and will be voted on by the people to
-                raise or lower before the contract is renounced.
-              </p>
-              <p>
-                5% Goes to Taking Over The World, and will be lowered to 1%
-                before we renounce the contract.
-              </p>
-            </CardBody>
-          </Card>
-        </div>
-        <div className="detail_info mt-4">
-          <Card>
-            <CardBody>
-              <div className="d-flex fw-bold small mb-3 justify-content-end">
-                <span className="flex-grow-1">ETH Claimed</span>
-                <CardExpandToggler />
-              </div>
-              <div className="info_list">
-                <label>{totalETHClaimed} ETH</label>
-              </div>
-            </CardBody>
-          </Card>
-          <Card>
-            <CardBody>
-              <div className="d-flex fw-bold small mb-3 justify-content-end">
-                <span className="flex-grow-1">Biggest Claims</span>
-                <CardExpandToggler />
-              </div>
-              <div className="info_list">
-                <a href="https://etherscan.io/tx/0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033">
-                  0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033
-                </a>
-                <a href="https://etherscan.io/tx/0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033">
-                  0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033
-                </a>
-                <a href="https://etherscan.io/tx/0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033">
-                  0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033
-                </a>
-                <a href="https://etherscan.io/tx/0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033">
-                  0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033
-                </a>
-                <a href="https://etherscan.io/tx/0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033">
-                  0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033
-                </a>
-              </div>
-            </CardBody>
-          </Card>
-          <Card>
-            <CardBody>
-              <div className="d-flex fw-bold small mb-3 justify-content-end">
-                <span className="flex-grow-1">Biggest Buys</span>
-                <CardExpandToggler />
-              </div>
-              <div className="info_list">
-                <a href="https://etherscan.io/tx/0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033">
-                  0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033
-                </a>
-                <a href="https://etherscan.io/tx/0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033">
-                  0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033
-                </a>
-                <a href="https://etherscan.io/tx/0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033">
-                  0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033
-                </a>
-                <a href="https://etherscan.io/tx/0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033">
-                  0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033
-                </a>
-                <a href="https://etherscan.io/tx/0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033">
-                  0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033
-                </a>
-              </div>
-            </CardBody>
-          </Card>
-          <Card>
-            <CardBody>
-              <div className="d-flex fw-bold small mb-3 justify-content-end">
-                <span className="flex-grow-1">Total Burned</span>
-                <CardExpandToggler />
-              </div>
-              <div className="info_list">
-                <label>{burnedBalance} $communism</label>
-              </div>
-            </CardBody>
-          </Card>
-        </div>
-        <div id="jsVectorMap" className="map_spread mt-4">
-          <h2>Map-Spread Communism</h2>
-          <Card>
-            <CardBody className="group_body">
-              <div className="d-flex fw-bold small mb-3 justify-content-end map_wrap">
-                <div id="jvectorMap" style={{ height: "300px" }}></div>
-              </div>
-              <div className="text_box">
-                <p>
-                  Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-                  accusantium doloremque laudantium, totam rem aperiam, eaque
-                  ipsa quae ab illo inventore veritatis et quasi architecto
-                  beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem
-                  quia voluptas sit aspernatur aut odit aut fugit, sed quia
-                  consequuntur magni dolores eos qui ratione voluptatem sequi
-                  nesciunt. Neque porro quisquam est, qui dolorem ipsum quia
-                  dolor sit amet, consectetur, adipisci velit, sed quia non
-                  numquam eius modi tempora incidunt ut labore et dolore magnam
-                  aliquam quaerat voluptatem. Ut enim ad minima veniam, quis
-                  nostrum exercitationem ullam corporis suscipit laboriosam,
-                  nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum
-                  iure reprehenderit qui in ea voluptate velit esse quam nihil
-                  molestiae consequatur, vel illum qui dolorem eum fugiat quo
-                  voluptas nulla pariatur?
-                </p>
-              </div>
-            </CardBody>
-          </Card>
-        </div>
-        <div className="personal_hoding mt-4">
-          <h2>Personal Holding</h2>
-          <div className="card_group">
-            <Card>
-              <CardBody>
-                <div className="d-flex fw-bold small mb-3 justify-content-end">
-                  <span className="flex-grow-1">Total Communism</span>
-                  <CardExpandToggler />
-                </div>
-                <label>{balance} $communism</label>
-              </CardBody>
-            </Card>
-            <Card>
-              <CardBody>
-                <div className="d-flex fw-bold small mb-3 justify-content-end">
-                  <span className="flex-grow-1">Claimed ETH</span>
-                  <CardExpandToggler />
-                </div>
-                <label>{personalClaimedETH} ETH</label>
-              </CardBody>
-            </Card>
-            <Card>
-              <CardBody>
-                <div className="d-flex fw-bold small mb-3 justify-content-end">
-                  <span className="flex-grow-1">ETH to be Claimed</span>
-                  <CardExpandToggler />
-                </div>
-                <label>{ethToBeClaimed} ETH</label>
-              </CardBody>
-            </Card>
-            {/* <Card>
-              <CardBody>
-                <div className="d-flex fw-bold small mb-3 justify-content-end">
-                  <span className="flex-grow-1">Next available claim</span>
-                  <CardExpandToggler />
-                </div>
-                <div className="coming-soon-timer text-center">
-                  <Countdown
-                    date={
-                      nextAvailableDate
-                        ? parseInt(nextAvailableDate) * 1000
-                        : Date.now()
-                    }
-                    ref={countdownRef}
-                    renderer={(props) => (
-                      <div className="is-countdown">
-                        <div className="countdown-row countdown-show4">
-                          <div className="countdown-section">
-                            <div className="countdown-amount">
-                              {props.days * 24 + props.hours}
-                            </div>
-                            <div className="countdown-period">Hours</div>
-                          </div>
-                          <div className="countdown-section">
-                            <div className="countdown-amount">
-                              {props.minutes}
-                            </div>
-                            <div className="countdown-period">Minutes</div>
-                          </div>
-                          <div className="countdown-section">
-                            <div className="countdown-amount">
-                              {props.seconds}
-                            </div>
-                            <div className="countdown-period">Seconds</div>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  />
-                </div>
-              </CardBody>
-            </Card> */}
           </div>
-        </div>
-      </div>
+        )}
+      />
     </div>
   );
 }

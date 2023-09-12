@@ -6,7 +6,6 @@ function ThemePanel() {
 	const [mode, setMode] = useState((localStorage && typeof localStorage.appMode !== 'undefined') ?  localStorage.appMode : 'dark');
 	const [theme, setTheme] = useState((localStorage && typeof localStorage.appTheme !== 'undefined') ?  localStorage.appTheme : 'theme-red');
 	const [cover, setCover] = useState((localStorage && typeof localStorage.appCover !== 'undefined') ?  localStorage.appCover : '');
-	console.log(theme, 'theme')
 	const toggleAppThemePanel = (event) => {
 		event.preventDefault();
 		

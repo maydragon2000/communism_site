@@ -4,3 +4,6 @@ export const WALLET_BALANCE = "Wallet_Balance";
 export const PERSONAL_CLAIMED_ETH = "Personal_Claimed_ETH";
 export const ETH_TO_BE_CLAIMED = "Eth_To_Be_Claimed";
 export const BURNED_BALANCE = "Burned_Balance";
+export const IS_ETH_CLAIMED = "IS_ETH_CLAIMED";
+export const Is_ETH_GAMBLE_CLAIMED = "IS_ETH_GAMBLE_CLAIMED";
+export const is_ETH_CLAIM_FAILED = "IS_ETH_CLAIM_FAILED";

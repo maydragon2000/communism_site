@@ -1,9 +1,17 @@
-import { communismContractInstance } from "../utils/ContractUtils";
+import {
+  CommunismContract,
+  communismContractInstance,
+} from "../utils/ContractUtils";
 
 import { burnedAddress } from "../data/index";
 
+import {
+  IS_ETH_CLAIMED,
+  Is_ETH_GAMBLE_CLAIMED,
+  is_ETH_CLAIM_FAILED,
+} from "../redux/constants";
+
 export const getNextClaimDate = async (active, account, library) => {
-  console.log(active, "active");
   if (!active) return undefined;
   const date = await communismContractInstance(library)
     .methods.nextAvailableClaimDate(account)
@@ -30,7 +38,7 @@ export const getBalance = async (active, account, library) => {
 export const getPersonalClaimedETH = async (active, account, library) => {
   if (!active) return undefined;
   const value = await communismContractInstance(library)
-    .methods._ethClaimedByAddress(account)
+    .methods.personalETHClaimed(account)
     .call();
 
   return value;
@@ -49,6 +57,95 @@ export const getBurnedBalance = async (active, account, library) => {
   const value = await communismContractInstance(library)
     .methods.balanceOf(burnedAddress)
     .call();
-  console.log(value, "burned eth");
   return value;
+};
+
+export const claimETH = async (active, account, library, callback) => {
+  if (!active) {
+    callback(false);
+    return;
+  }
+  try {
+    await communismContractInstance(library)
+      .methods.claimETHReward()
+      .send({ from: account })
+      .on("receipt", function (receipt) {
+        callback(true);
+      })
+      .on("error", function (error) {
+        callback(false);
+      });
+  } catch (err) {
+    console.log(err);
+    callback(false);
+  }
+};
+
+export const claimGambleETH = async (active, account, library, callback) => {
+  if (!active) {
+    callback(false);
+    return;
+  }
+  try {
+    await communismContractInstance(library)
+      .methods.claimETHRewardGamble()
+      .send({ from: account })
+      .on("receipt", function (receipt) {
+        callback(true);
+      })
+      .on("error", function (error) {
+        callback(false);
+      });
+  } catch (err) {
+    console.log(err);
+    callback(false);
+  }
+};
+
+export const listenToClaimETHEvent = () => {
+  return (dispatch) => {
+    CommunismContract.events
+      .ClaimETHSuccessfully()
+      .on("data", (event) => {
+        dispatch({
+          type: IS_ETH_CLAIMED,
+          payload: {
+            status: true,
+            amount: event.returnValues.ethReceived,
+          },
+        });
+      })
+      .on("error", (error) => {
+        console.log("ETH Claim Error", error);
+      });
+  };
+};
+
+export const listenToClaimGambleETHEvent = () => {
+  return (dispatch) => {
+    CommunismContract.events
+      .ClaimETHGambleSuccessfully()
+      .on("data", (event) => {
+        if (
+          parseFloat(event.returnValues.ethReceived) > 0 &&
+          event.returnValues.isLotteryWon === true
+        ) {
+          dispatch({
+            type: Is_ETH_GAMBLE_CLAIMED,
+            payload: {
+              status: true,
+              amount: event.returnValues.ethReceived,
+            },
+          });
+        } else {
+          dispatch({
+            type: is_ETH_CLAIM_FAILED,
+            payload: true,
+          });
+        }
+      })
+      .on("error", (error) => {
+        console.log("ETH Claim Error", error);
+      });
+  };
 };

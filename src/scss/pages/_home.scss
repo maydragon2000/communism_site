@@ -97,6 +97,66 @@ h2 {
   }
 }
 
+.claim_buttons {
+  display: flex;
+  justify-content: center;
+  column-gap: 2%;
+  @include media-breakpoint-down(lg) {
+    flex-direction: column;
+    row-gap: 24px;
+  }
+  .card {
+    width: 48%;
+    position: relative;
+    @include media-breakpoint-down(lg) {
+      width: 100%;
+    }
+    &.card-expand {
+      width: 100%;
+      position: fixed;
+    }
+    span {
+      text-align: center;
+      width: 100%;
+      font-weight: $font-weight-bold;
+      color: var(--bs-heading-color);
+      font-size: rem(20px);
+      margin-bottom: 10px;
+    }
+    .main {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 150px;
+      @include media-breakpoint-down(xl) {
+        height: 200px;
+      }
+      @include media-breakpoint-down(lg) {
+        height: auto;
+      }
+      p {
+        margin: 0px;
+      }
+      button {
+        position: absolute;
+        border: none;
+        background-color: var(--bs-theme);
+        font-size: 16px;
+        height: 42px;
+        border-radius: 6px;
+        padding-left: 10px;
+        padding-right: 10px;
+        bottom: 20px;
+        width: 158px;
+        @include media-breakpoint-down(lg) {
+          position: initial;
+          margin-top: 20px;
+        }
+      }
+    }
+  }
+}
+
 .video_info {
   display: flex;
   justify-content: center;

@@ -4,6 +4,7 @@ import { Navigate } from "react-router-dom";
 
 import Home from "./../pages/home/home.js";
 import Manifesto from "../pages/manifesto/manifesto.js";
+import Casino from "../pages/casino/casino.js";
 
 const AppRoute = [
   {
@@ -13,6 +14,7 @@ const AppRoute = [
       { path: "", element: <Navigate to="/home" /> },
       { path: "home", element: <Home /> },
       { path: "manifesto", element: <Manifesto /> },
+      // { path: 'casino', element: <Casino />}
     ],
   },
 ];

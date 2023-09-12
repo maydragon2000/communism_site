@@ -5,6 +5,9 @@ import {
   PERSONAL_CLAIMED_ETH,
   ETH_TO_BE_CLAIMED,
   BURNED_BALANCE,
+  IS_ETH_CLAIMED,
+  Is_ETH_GAMBLE_CLAIMED,
+  is_ETH_CLAIM_FAILED,
 } from "../constants";
 
 const initialState = {
@@ -14,6 +17,9 @@ const initialState = {
   personalClaimedETH: 0,
   ethToBeClaimed: 0,
   burnedBalance: 0,
+  isETHClaimed: false,
+  isETHClaimFailed: false,
+  ethReceivedAmount: 0,
 };
 
 const tokenReducer = (state = initialState, action) => {
@@ -52,6 +58,27 @@ const tokenReducer = (state = initialState, action) => {
       return {
         ...state,
         burnedBalance: action.payload,
+      };
+    }
+    case IS_ETH_CLAIMED: {
+      return {
+        ...state,
+        isETHClaimed: action.payload.status,
+        ethReceivedAmount: action.payload.amount,
+      };
+    }
+    case Is_ETH_GAMBLE_CLAIMED: {
+      return {
+        ...state,
+        isETHClaimed: action.payload.status,
+        ethReceivedAmount: action.payload.amount,
+      };
+    }
+    case is_ETH_CLAIM_FAILED: {
+      return {
+        ...state,
+        isETHClaimFailed: action.payload,
+        ethReceivedAmount: 0,
       };
     }
     default:
