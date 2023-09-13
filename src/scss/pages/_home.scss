@@ -274,9 +274,9 @@ h2 {
         }
       }
       .text_box {
-        width: 35%;
+        width: 30%;
         height: 300px;
-        overflow-y: scroll;
+        overflow-y: auto;
         @include media-breakpoint-down(xl) {
           width: 100%;
           height: auto;
