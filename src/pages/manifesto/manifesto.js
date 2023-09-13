@@ -15,10 +15,10 @@ const Manifesto = () => {
             <div className="d-flex fw-bold small mb-3 justify-content-end">
               <CardExpandToggler />
             </div>
-            <p>
+            <h5>
               The Grand Manifesto of Communism.Network: The Blockchain Wealth
               Distribution Revolution
-            </p>
+            </h5>
             <p>
               Greetings, comrades of the digital age! Tired of Capitalist Ponzi
               tokenomics? With $COMMUNISM, all you need to do is hold the token
@@ -29,7 +29,7 @@ const Manifesto = () => {
               staking, just claim your ETH comrade.
             </p>
             <br />
-            <p>A Proletarian Uprising in Cyberspace: The Red Blockchain!</p>
+            <h5>A Proletarian Uprising in Cyberspace: The Red Blockchain!</h5>
             <br />
             <p>100 Million $COMMUNISM will ever exist</p>
             <p>
@@ -43,31 +43,30 @@ const Manifesto = () => {
             </p>
             <p>Team Holding 12%</p>
             <br />
-            <p>The Great Leap Forward in Redistribution!</p>
+            <h5>The Great Leap Forward in Redistribution!</h5>
             <br />
             <p>
               Forget the outdated cries of seizing mere means of production; we
               are here to seize the means of redistribution!
             </p>
             <br />
-            <p>13% Mandated Tax of All Transactions</p>
+            <p>6% Mandated Tax of All Transactions</p>
             <p>
-              8% Start, Community Decides End: $COMMUNISM Proletarian Dividend:
-              Each transaction generously redistributes wealth back to the
-              proletariat ($COMMUNISM holders). This is your digital bread
-              ration, comrades, and it arrives at the end of the claim period.
-              This will rise to become the full allocation of the taxes and will
-              be voted on by the people before the contract is renounced.
+              5% : $COMMUNISM Proletarian Dividend: Each transaction generously
+              redistributes wealth back to the proletariat ($COMMUNISM holders).
+              This is your digital bread ration, comrades, and it arrives at the
+              end of the claim period. This will rise to become the full
+              allocation of the taxes and will be voted on by the people before
+              the contract is renounced.
             </p>
             <p>
-              5% Start, 1 End: People's Tax for Revolutionary Propaganda: A
-              minuscule tithe for the grand cause, allocated to amplify our
-              revolutionary message across the blockchain and beyond! This will
-              only be at 5 for a brief time until ending at 1% to develop a war
-              chest to fight the revolution
+              1% : People's Tax for Revolutionary Propaganda: A minuscule tithe
+              for the grand cause, allocated to amplify our revolutionary
+              message across the blockchain and beyond! This will only be 1% to
+              develop a war chest to fight the revolution.
             </p>
             <br />
-            <p>The People's Assembly: FAQs </p>
+            <h5>The People's Assembly: FAQs </h5>
             <br />
             <p>Q1: The Socialist Method of Earning ETH? </p>
             <p>
@@ -117,11 +116,11 @@ const Manifesto = () => {
               years time. If you only sell a portion, your claim becomes delayed
               by 1 hour.
             </p>
+            <p>Q11: How shall the Party Sustain the Revolution?</p>
             <p>
-              Q11: How shall the Party Sustain the Revolution? A: The fees are
-              just the spark to the $COMMUNIST fire that will burn its light for
-              eternity. We will embark on revenue generating ventures that go
-              directly to the claim pool immediately at launch.
+              A: The fees are just the spark to the $COMMUNIST fire that will
+              burn its light for eternity. We will embark on revenue generating
+              ventures that go directly to the claim pool immediately at launch.
             </p>
             <br />
             <p>The Act of Claiming</p>
@@ -132,7 +131,7 @@ const Manifesto = () => {
             </p>
             <p>
               Your claimable ETH will be displayed in all its glory, based on
-              your share of the $COMMUNISM supply.{" "}
+              your share of the $COMMUNISM supply.
             </p>
             <br />
             <p>How and Where to Procure $COMMUNISM</p>
@@ -148,6 +147,15 @@ const Manifesto = () => {
               Ensure your digital wallet is abundant in ETH, not merely for
               transactional purposes but to fuel the ceaseless fire of our
               revolution!
+            </p>
+            <br />
+            <p>
+              Purge Red Reserve : In order to make our glorious economy function
+              as intended we require the valiant soldiers of the communist party
+              to do their part and poke the system. By committing yourself to
+              the cause you allow the bread lines to open and allow for
+              redistribution to reach your comrade friends! Whoever successfully
+              purges the red reserve will be rewarded with 2% of the total pool.
             </p>
           </CardBody>
         </Card>
