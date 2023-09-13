@@ -24,7 +24,6 @@ const SuccessModal = () => {
   };
   useEffect(() => {
     if (isETHClaimed) playSound();
-    console.log("sound test");
   }, [isETHClaimed]);
   return (
     <MUIDialog open={isETHClaimed} onClose={onClose} className="success_modal">

@@ -303,6 +303,12 @@ function Home() {
     });
   };
 
+  const openUniswap = () => {
+    window.open(
+      "https://app.uniswap.org/#/swap?outputCurrency=0x6E738c23DB4f328e1049b44023680B3FDFf6D9B5"
+    );
+  };
+
   useEffect(() => {
     renderMap();
     document.addEventListener("theme-reload", () => {
@@ -463,6 +469,7 @@ function Home() {
                 </CardBody>
               </Card>
             </div>
+
             <div className="video_info mt-4">
               <Card>
                 <CardBody>
@@ -631,6 +638,23 @@ function Home() {
                   </CardBody>
                 </Card>
               </div>
+            </div>
+            <div className="chart_info mt-4">
+              <Card>
+                <CardBody>
+                  <div className="d-flex justify-content-center">
+                    <div id="dexscreener-embed">
+                      <iframe
+                        src="https://dexscreener.com/goerli/0xb4732E22EeDC5AaBf7ff4BfA3bb8f643C0E8c1a6?embed=1&theme=dark&trades=0&info=0"
+                        title="chart"
+                      ></iframe>
+                    </div>
+                  </div>
+                  <div className="d-flex justify-content-center mt-4">
+                    <button onClick={openUniswap}>Buy On Uniswap</button>
+                  </div>
+                </CardBody>
+              </Card>
             </div>
           </div>
         )}
