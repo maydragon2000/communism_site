@@ -404,7 +404,7 @@ function Home() {
                   </div>
                   <div className="main">
                     <p>
-                      comrades, you may select this option if you wish to
+                      Comrades, you may select this option if you wish to
                       receive your allocated rations this amount is visible at
                       the bottom of the screen in the “Eth to be claimed”
                       section
