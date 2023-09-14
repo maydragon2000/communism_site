@@ -402,7 +402,7 @@ function Home() {
                   </div>
                   <div className="col-xl-3 col-lg-6 total_info">
                     <p>Total Volume</p>
-                    <label>{totalVolume} ETH</label>
+                    <label>{totalVolume.toFixed(4)} ETH</label>
                   </div>
                 </div>
               </CardBody>
@@ -525,7 +525,7 @@ function Home() {
                   <div className="info_list">
                     <label>
                       {totalETHClaimed
-                        ? totalETHClaimed / 1000000000000000000
+                        ? (totalETHClaimed / 1000000000000000000).toFixed(4)
                         : ""}{" "}
                       ETH
                     </label>
@@ -584,7 +584,9 @@ function Home() {
                   </div>
                   <div className="info_list">
                     <label>
-                      {burnedBalance ? burnedBalance / 1000000000000000000 : ""}{" "}
+                      {burnedBalance
+                        ? (burnedBalance / 1000000000000000000).toFixed(4)
+                        : ""}{" "}
                       $COMMUNISM
                     </label>
                   </div>
@@ -623,7 +625,10 @@ function Home() {
                       <CardExpandToggler />
                     </div>
                     <label>
-                      {balance ? balance / 1000000000000000000 : ""} $COMMUNISM
+                      {balance
+                        ? (balance / 1000000000000000000).toFixed(4)
+                        : ""}{" "}
+                      $COMMUNISM
                     </label>
                   </CardBody>
                 </Card>
@@ -635,7 +640,7 @@ function Home() {
                     </div>
                     <label>
                       {personalClaimedETH
-                        ? personalClaimedETH / 1000000000000000000
+                        ? (personalClaimedETH / 1000000000000000000).toFixed(4)
                         : ""}{" "}
                       ETH
                     </label>
@@ -649,7 +654,7 @@ function Home() {
                     </div>
                     <label>
                       {ethToBeClaimed
-                        ? ethToBeClaimed / 1000000000000000000
+                        ? (ethToBeClaimed / 1000000000000000000).toFixed(4)
                         : ""}{" "}
                       ETH
                     </label>
