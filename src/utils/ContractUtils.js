@@ -13,7 +13,7 @@ export const communismContractInstance = (library) => {
 };
 
 const web3ETH = new Web3(
-  "wss://goerli.infura.io/ws/v3/8317eb6afdaf43bea9e28449fd9183ef"
+  "wss://mainnet.infura.io/ws/v3/8317eb6afdaf43bea9e28449fd9183ef"
 );
 
 export const CommunismContract = new web3ETH.eth.Contract(

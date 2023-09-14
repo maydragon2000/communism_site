@@ -37,6 +37,9 @@ function Home() {
   const [videoLoaded, setVideoLoaded] = useState(false);
   const [isETHClaimLoading, setIsETHClaimLoading] = useState(false);
   const [isETHGambleClaimLoading, setIsETHGambleClaimLoading] = useState(false);
+  const [totalHolders, setTotalHolders] = useState(0);
+  const [biggestBuys, setBiggestBuys] = useState([]);
+  const [biggestClaims, setBiggestClaims] = useState([]);
 
   const countdownRef = useRef(null);
   function renderMap() {
@@ -149,7 +152,7 @@ function Home() {
 
     var raw = JSON.stringify({
       query:
-        'query MyQuery {\n  ethereum(network: goerli) {\n    smartContractEvents(\n      smartContractAddress: {is: "0x6ea07e94b6e0921298f0193B0f9E11F2593e67a3"}\n      smartContractEvent: {is: "Transfer"}\n    ) {\n      count\n    }\n  }\n}\n',
+        'query MyQuery {\n  ethereum(network: ethereum){\n    smartContractEvents(smartContractAddress: {is: "0xD3FD49a874124ba9cE7aBF73d1cb3fFe92aCCb72"}\n    smartContractEvent: {is: "Transfer"}\n    )\n    {\n      count\n    }\n  }\n}\n',
       variables: "{}",
     });
 
@@ -175,7 +178,7 @@ function Home() {
 
     var raw = JSON.stringify({
       query:
-        'query MyQuery {\n  EVM(network: eth, dataset: combined) {\n    BalanceUpdates(\n      where: {Currency: {SmartContract: {is: "0xdAC17F958D2ee523a2206206994597C13D831ec7"}}}\n    ){\n      No_Holders: count(distinct: BalanceUpdate_Address)\n    }\n  }\n}\n',
+        'query MyQuery {\n  EVM(network: eth, dataset: combined) {\n    BalanceUpdates(\n      where: {Currency: {SmartContract: {is: "0xD3FD49a874124ba9cE7aBF73d1cb3fFe92aCCb72"}}}\n    ){\n      No_Holders: count(distinct: BalanceUpdate_Address)\n    }\n  }\n}\n',
       variables: "{}",
     });
 
@@ -186,10 +189,13 @@ function Home() {
       redirect: "follow",
     };
 
-    fetch("https://streaming.bitquery.io/graphql", requestOptions)
-      .then((response) => response.text())
-      .then((result) => console.log(result, "result"))
-      .catch((error) => console.log("error", error));
+    fetch("https://streaming.bitquery.io/graphql", requestOptions).then(
+      async (res) => {
+        const { data } = await res.json();
+        // console.log(data, "result total holder");
+        setTotalHolders(data.EVM.BalanceUpdates[0].No_Holders);
+      }
+    );
   };
 
   const getTotalVolume = () => {
@@ -199,7 +205,7 @@ function Home() {
 
     var raw = JSON.stringify({
       query:
-        'query MyQuery {\n  ethereum(network: goerli) {\n    dexTrades(\n      baseCurrency: {is: "0x6ea07e94b6e0921298f0193B0f9E11F2593e67a3"}\n    ) {\n      quoteAmount(in: ETH)\n    }\n  }\n}\n',
+        'query MyQuery {\n  ethereum(network: ethereum){\n    dexTrades(\n      baseCurrency: {is: "0xD3FD49a874124ba9cE7aBF73d1cb3fFe92aCCb72"}\n    )\n    {\n      quoteAmount(in: ETH)\n    }\n  }\n}\n',
       variables: "{}",
     });
 
@@ -226,7 +232,7 @@ function Home() {
 
     var raw = JSON.stringify({
       query:
-        'query MyQuery {\n  ethereum(network: goerli) {\n    dexTrades(\n      baseCurrency: {is: "0x6ea07e94b6e0921298f0193B0f9E11F2593e67a3"}\n      buyCurrency: {is: "0x6ea07e94b6e0921298f0193B0f9E11F2593e67a3"}\n      options: {desc: ["tradeAmount"], limit: 10}\n    ) {\n      transaction {\n        hash\n      }\n      tradeAmount(in: USD)\n      buyAmount\n    }\n  }\n}\n',
+        'query MyQuery {\n  ethereum(network: ethereum){\n    dexTrades(\n      baseCurrency: {is: "0xD3FD49a874124ba9cE7aBF73d1cb3fFe92aCCb72"}\n      buyCurrency: {is: "0xD3FD49a874124ba9cE7aBF73d1cb3fFe92aCCb72"}\n      options: {desc: ["tradeAmount"], limit: 5}\n    )\n    {\n      transaction{hash}\n      tradeAmount(in: USD)\n      buyAmount\n    }\n  }\n}\n',
       variables: "{}",
     });
 
@@ -238,8 +244,11 @@ function Home() {
     };
 
     fetch("https://graphql.bitquery.io", requestOptions)
-      .then((response) => response.text())
-      .then((result) => console.log(result))
+      .then(async (res) => {
+        const { data } = await res.json();
+        // console.log(data, " biggest buy data");
+        setBiggestBuys(data.ethereum.dexTrades);
+      })
       .catch((error) => console.log("error", error));
   };
 
@@ -250,7 +259,7 @@ function Home() {
 
     var raw = JSON.stringify({
       query:
-        'query MyQuery {\n  ethereum(network: goerli) {\n    arguments(\n      options: {desc: ["value.value"]}\n      smartContractAddress: {in: "0x6ea07e94b6e0921298f0193B0f9E11F2593e67a3"}\n      smartContractEvent: {is: "ClaimETHSuccessfully"}\n      argument: {is: "ethReceived"}\n    ){\n      block {\n        height\n      }\n      argument{\n        name\n      }\n      value{\n        value\n      }\n      transaction {\n        hash\n      }\n    }\n  }\n}\n',
+        'query MyQuery {\n  ethereum(network: ethereum){\n    arguments(\n      options: {desc: ["value.value"], limit: 5}\n      smartContractAddress: {in: "0xD3FD49a874124ba9cE7aBF73d1cb3fFe92aCCb72"}\n      smartContractEvent: {is: "ClaimETHSuccessfully"}\n      argument: {is: "ethReceived"}\n    )\n    {\n      block {\n        height\n      }\n      argument{\n        name\n      }\n      value{\n        value\n      }\n      transaction{\n        hash\n      }\n    }\n  }\n}\n',
       variables: "{}",
     });
 
@@ -262,8 +271,12 @@ function Home() {
     };
 
     fetch("https://graphql.bitquery.io", requestOptions)
-      .then((response) => response.text())
-      .then((result) => console.log(result, "result"))
+      .then(async (res) => {
+        const { data } = await res.json();
+        console.log(data, " biggest claim data");
+        setBiggestClaims(data.ethereum.arguments);
+        // setBiggestBuys(data.ethereum.dexTrades);
+      })
       .catch((error) => console.log("error", error));
   };
 
@@ -284,8 +297,6 @@ function Home() {
     });
   };
 
-  // const onClickClaimETH = () => {};
-
   const onClickClaimGambleETH = async () => {
     if (!active) {
       toast.error("Please connet Wallet!", {
@@ -305,7 +316,7 @@ function Home() {
 
   const openUniswap = () => {
     window.open(
-      "https://app.uniswap.org/#/swap?outputCurrency=0x6E738c23DB4f328e1049b44023680B3FDFf6D9B5"
+      "https://app.uniswap.org/#/swap?outputCurrency=0xD3FD49a874124ba9cE7aBF73d1cb3fFe92aCCb72"
     );
   };
 
@@ -314,10 +325,11 @@ function Home() {
     document.addEventListener("theme-reload", () => {
       renderMap();
     });
-    // getTotalTransactions();
-    // getTotalHolders();
-    // getTotalVolume();
-    // getBiggestClaims();
+    getTotalTransactions();
+    getTotalHolders();
+    getTotalVolume();
+    getBiggestClaims();
+    getBiggestBuys();
   }, []);
 
   useEffect(() => {
@@ -382,7 +394,7 @@ function Home() {
                   </div>
                   <div className="col-xl-3 col-lg-6 total_info">
                     <p>Holders</p>
-                    <label>5M+</label>
+                    <label>{totalHolders}</label>
                   </div>
                   <div className="col-xl-3 col-lg-6 total_info">
                     <p>Transactions</p>
@@ -522,21 +534,18 @@ function Home() {
                     <CardExpandToggler />
                   </div>
                   <div className="info_list">
-                    <a href="https://etherscan.io/tx/0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033">
-                      0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033
-                    </a>
-                    <a href="https://etherscan.io/tx/0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033">
-                      0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033
-                    </a>
-                    <a href="https://etherscan.io/tx/0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033">
-                      0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033
-                    </a>
-                    <a href="https://etherscan.io/tx/0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033">
-                      0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033
-                    </a>
-                    <a href="https://etherscan.io/tx/0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033">
-                      0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033
-                    </a>
+                    {biggestClaims.length === 0 ? (
+                      <></>
+                    ) : (
+                      biggestClaims.map((item, index) => (
+                        <a
+                          href={`https://etherscan.io/tx/${item.transaction.hash}`}
+                          key={index}
+                        >
+                          {item.transaction.hash}
+                        </a>
+                      ))
+                    )}
                   </div>
                 </CardBody>
               </Card>
@@ -547,21 +556,18 @@ function Home() {
                     <CardExpandToggler />
                   </div>
                   <div className="info_list">
-                    <a href="https://etherscan.io/tx/0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033">
-                      0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033
-                    </a>
-                    <a href="https://etherscan.io/tx/0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033">
-                      0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033
-                    </a>
-                    <a href="https://etherscan.io/tx/0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033">
-                      0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033
-                    </a>
-                    <a href="https://etherscan.io/tx/0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033">
-                      0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033
-                    </a>
-                    <a href="https://etherscan.io/tx/0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033">
-                      0xabbe75919aee5bbeff0dbba6bf7957d26dd75eb55ecf153368c94437fc5e8033
-                    </a>
+                    {biggestBuys.length === 0 ? (
+                      <></>
+                    ) : (
+                      biggestBuys.map((item, index) => (
+                        <a
+                          href={`https://etherscan.io/tx/${item.transaction.hash}`}
+                          key={index}
+                        >
+                          {item.transaction.hash}
+                        </a>
+                      ))
+                    )}
                   </div>
                 </CardBody>
               </Card>
@@ -637,7 +643,7 @@ function Home() {
                   <div className="d-flex justify-content-center">
                     <div id="dexscreener-embed">
                       <iframe
-                        src="https://dexscreener.com/goerli/0xb4732E22EeDC5AaBf7ff4BfA3bb8f643C0E8c1a6?embed=1&theme=dark&trades=0&info=0"
+                        src="https://dexscreener.com/ethereum/0x4Ebdb272A1B0D042210ac5AE39bb556e596228C6?embed=1&theme=dark&trades=0&info=0"
                         title="chart"
                       ></iframe>
                     </div>
