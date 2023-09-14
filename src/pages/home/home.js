@@ -523,7 +523,12 @@ function Home() {
                     <CardExpandToggler />
                   </div>
                   <div className="info_list">
-                    <label>{totalETHClaimed} ETH</label>
+                    <label>
+                      {totalETHClaimed
+                        ? totalETHClaimed / 1000000000000000000
+                        : ""}{" "}
+                      ETH
+                    </label>
                   </div>
                 </CardBody>
               </Card>
@@ -578,7 +583,10 @@ function Home() {
                     <CardExpandToggler />
                   </div>
                   <div className="info_list">
-                    <label>{burnedBalance} $COMMUNISM</label>
+                    <label>
+                      {burnedBalance ? burnedBalance / 1000000000000000000 : ""}{" "}
+                      $COMMUNISM
+                    </label>
                   </div>
                 </CardBody>
               </Card>
@@ -628,7 +636,7 @@ function Home() {
                     <label>
                       {personalClaimedETH
                         ? personalClaimedETH / 1000000000000000000
-                        : ""}
+                        : ""}{" "}
                       ETH
                     </label>
                   </CardBody>
@@ -642,7 +650,7 @@ function Home() {
                     <label>
                       {ethToBeClaimed
                         ? ethToBeClaimed / 1000000000000000000
-                        : ""}
+                        : ""}{" "}
                       ETH
                     </label>
                   </CardBody>
