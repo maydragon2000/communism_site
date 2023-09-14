@@ -578,7 +578,7 @@ function Home() {
                     <CardExpandToggler />
                   </div>
                   <div className="info_list">
-                    <label>{burnedBalance} $communism</label>
+                    <label>{burnedBalance} $COMMUNISM</label>
                   </div>
                 </CardBody>
               </Card>
@@ -614,7 +614,9 @@ function Home() {
                       <span className="flex-grow-1">Total Communism</span>
                       <CardExpandToggler />
                     </div>
-                    <label>{balance} $communism</label>
+                    <label>
+                      {balance ? balance / 1000000000000000000 : ""} $COMMUNISM
+                    </label>
                   </CardBody>
                 </Card>
                 <Card>
@@ -623,7 +625,12 @@ function Home() {
                       <span className="flex-grow-1">Claimed ETH</span>
                       <CardExpandToggler />
                     </div>
-                    <label>{personalClaimedETH} ETH</label>
+                    <label>
+                      {personalClaimedETH
+                        ? personalClaimedETH / 1000000000000000000
+                        : ""}
+                      ETH
+                    </label>
                   </CardBody>
                 </Card>
                 <Card>
@@ -632,7 +639,12 @@ function Home() {
                       <span className="flex-grow-1">ETH to be Claimed</span>
                       <CardExpandToggler />
                     </div>
-                    <label>{ethToBeClaimed} ETH</label>
+                    <label>
+                      {ethToBeClaimed
+                        ? ethToBeClaimed / 1000000000000000000
+                        : ""}
+                      ETH
+                    </label>
                   </CardBody>
                 </Card>
               </div>

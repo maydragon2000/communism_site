@@ -226,15 +226,15 @@ function Header({ appSidebarCollapsed, setAppSidebarCollapsed }) {
                 </a>
               </div>
               <div className="col-4">
-                <Link
-                  to="/calendar"
+                <a
+                  href="https://www.dextools.io/app/en/ether/pair-explorer/0x4ebdb272a1b0d042210ac5ae39bb556e596228c6"
                   className="dropdown-item text-decoration-none p-3 bg-none"
                 >
                   <div>
                     <i className="fa fa-chart-line h2 opacity-5 d-block my-1"></i>
                   </div>
                   <div className="fw-500 fs-10px text-inverse">DEXTOOLS</div>
-                </Link>
+                </a>
               </div>
             </div>
           </div>
